@@ -115,15 +115,16 @@ const ProductDetail = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-muted p-4">
       <div className="container mx-auto max-w-4xl">
-        <Card className="overflow-hidden shadow-xl border-0 bg-gradient-to-br from-card to-card/50 backdrop-blur-sm">
-          <div className="grid md:grid-cols-2 gap-8 p-8">
+          <Card className="overflow-hidden shadow-elegant border-0 bg-gradient-card backdrop-blur-sm">
+            <div className="grid md:grid-cols-2 gap-8 p-8">
             {/* Product Image */}
             <div className="space-y-4">
-              <div className="aspect-square overflow-hidden rounded-2xl bg-white p-8 shadow-inner">
+              <div className="aspect-square overflow-hidden rounded-2xl bg-gradient-to-br from-white to-muted/30 p-8 shadow-card relative group">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"></div>
                 <img
                   src={product.image}
                   alt={product.title}
-                  className="h-full w-full object-contain transition-transform duration-500 hover:scale-105"
+                  className="h-full w-full object-contain transition-all duration-500 group-hover:scale-105 relative z-10"
                 />
               </div>
               <div className="flex items-center justify-center space-x-2">
@@ -145,12 +146,15 @@ const ProductDetail = () => {
                   {product.title}
                 </CardTitle>
                 <div className="flex items-baseline space-x-2">
-                  <span className="text-4xl font-bold text-primary">
-                    ${product.price}
+                  <span className="text-4xl font-bold bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
+                    ₹{(product.price * 83).toFixed(0)}
                   </span>
                   <span className="text-muted-foreground line-through">
-                    ${(product.price * 1.2).toFixed(2)}
+                    ₹{(product.price * 83 * 1.2).toFixed(0)}
                   </span>
+                  <Badge variant="destructive" className="ml-2 animate-pulse">
+                    17% OFF
+                  </Badge>
                 </div>
               </div>
 
@@ -165,26 +169,27 @@ const ProductDetail = () => {
                 <div className="space-y-3">
                   <Button 
                     onClick={handleAddToCart}
-                    className="w-full h-12 text-lg font-semibold bg-gradient-to-r from-primary to-primary-glow hover:shadow-lg hover:shadow-primary/25 transition-all duration-300"
+                    className="w-full h-14 text-lg font-semibold bg-gradient-primary hover:shadow-elegant hover:scale-[1.02] transition-all duration-300 border-0"
                   >
                     <ShoppingCart className="mr-2 h-5 w-5" />
                     Add to Cart
                   </Button>
                   
                   <div className="grid grid-cols-2 gap-3">
-                    <Button variant="outline" className="h-12">
+                    <Button variant="outline" className="h-12 hover:bg-primary/10 hover:border-primary/50 transition-all duration-300">
                       ♡ Wishlist
                     </Button>
-                    <Button variant="outline" className="h-12">
+                    <Button variant="outline" className="h-12 hover:bg-primary/10 hover:border-primary/50 transition-all duration-300">
                       🔗 Share
                     </Button>
                   </div>
                 </div>
 
                 <div className="pt-4 space-y-2 text-sm text-muted-foreground">
-                  <p>✓ Free shipping on orders over $50</p>
+                  <p>✓ Free shipping on orders over ₹4,000</p>
                   <p>✓ 30-day return policy</p>
                   <p>✓ 2-year warranty included</p>
+                  <p>✓ Cash on delivery available</p>
                 </div>
               </div>
             </div>
