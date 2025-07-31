@@ -56,11 +56,56 @@ const ProductDetail = () => {
     fetchProduct();
   }, [toast]);
 
+  const [isWishlisted, setIsWishlisted] = useState(false);
+
   const handleAddToCart = () => {
     toast({
       title: "Added to Cart",
       description: `${product?.title} has been added to your cart!`,
     });
+  };
+
+  const handleWishlist = () => {
+    setIsWishlisted(!isWishlisted);
+    toast({
+      title: isWishlisted ? "Removed from Wishlist" : "Added to Wishlist",
+      description: `${product?.title} has been ${isWishlisted ? 'removed from' : 'added to'} your wishlist!`,
+    });
+  };
+
+  const handleShare = async () => {
+    const shareData = {
+      title: product?.title,
+      text: product?.description,
+      url: window.location.href,
+    };
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+        toast({
+          title: "Shared Successfully",
+          description: "Product shared successfully!",
+        });
+      } catch (err) {
+        console.log('Error sharing:', err);
+      }
+    } else {
+      // Fallback: copy to clipboard
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        toast({
+          title: "Link Copied",
+          description: "Product link copied to clipboard!",
+        });
+      } catch (err) {
+        toast({
+          title: "Share Failed",
+          description: "Unable to share or copy link",
+          variant: "destructive",
+        });
+      }
+    }
   };
 
   if (loading) {
@@ -176,10 +221,18 @@ const ProductDetail = () => {
                   </Button>
                   
                   <div className="grid grid-cols-2 gap-3">
-                    <Button variant="outline" className="h-12 hover:bg-primary/10 hover:border-primary/50 transition-all duration-300">
-                      ♡ Wishlist
+                    <Button 
+                      onClick={handleWishlist}
+                      variant="outline" 
+                      className="h-12 hover:bg-primary/10 hover:border-primary/50 transition-all duration-300"
+                    >
+                      {isWishlisted ? '♥' : '♡'} Wishlist
                     </Button>
-                    <Button variant="outline" className="h-12 hover:bg-primary/10 hover:border-primary/50 transition-all duration-300">
+                    <Button 
+                      onClick={handleShare}
+                      variant="outline" 
+                      className="h-12 hover:bg-primary/10 hover:border-primary/50 transition-all duration-300"
+                    >
                       🔗 Share
                     </Button>
                   </div>
